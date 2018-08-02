@@ -38,7 +38,7 @@ public class Person {
 	   person.setAddress((String) obj.get("Address"));
 	   person.setCity((String) obj.get("City"));
 	   person.setState((String) obj.get("State"));
-	   person.setZip((String) obj.get("ZipCode"));
+	   person.setZip((String) obj.get("Zip"));
 	   person.setNumber((String) obj.get("PhoneNumber"));
    }
 

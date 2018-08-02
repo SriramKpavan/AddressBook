@@ -39,8 +39,9 @@ public class Utility {
 		                String temp = array[j];
 		                array[j] = array[j+1];
 		                array[j+1] = temp;
-		                Object s = list.get(j);
-		                list.add(j, list.get(j+1));
+		                Object s = list.remove(j);
+		                Object k = list.remove(j);
+		                list.add(j, (Person) k);
 		                list.add(j+1, (Person) s);
 		            }
 			}

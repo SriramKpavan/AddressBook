@@ -15,23 +15,24 @@ public class AddressBook {
 	Utility utility = new Utility();
 	static LinkedList<Person> list = new LinkedList<Person>();
 	Person person;
+	AddressBooksOperations addressBook;
+	//String filename = addressBook.fileName;
 	
-	public LinkedList<Person> readFile() throws Exception{
+	public LinkedList<Person> readFile(String filename) throws Exception{
 		JSONParser parser = new JSONParser();
 		person = new Person();
-		Object obj = parser.parse(new FileReader("Input//AddressBook.json"));
+		Object obj = parser.parse(new FileReader("Input//" +filename+ ".json"));
 		JSONObject jo = (JSONObject)obj ;
 		JSONArray ja = (JSONArray) jo.get("Persons");
 		for(int i=0; i<ja.size(); i++){
 			person.toPerson((JSONObject) ja.get(i));
-			System.out.println(person.convertPerson());
 			list.add(person.convertPerson());	
 		}
 		return list;	
 	}
 	
-	public void add() throws Exception {
-		list = readFile();
+	public void add(String filename) throws Exception {
+		list = readFile(filename);
 		person = new Person();
 		System.out.println("Give the name of the person you want to add");
 		String firstname = utility.takeInputString();
@@ -55,40 +56,40 @@ public class AddressBook {
 		String num = utility.takeInputString();
 		person.setNumber(num);
 		list.add(person);
-		updateBook(list);
 	}
 	
-	private void updateBook(LinkedList<Person> list) throws Exception {
+	public void updateBook(LinkedList<Person> list, String filename) throws Exception {
 		// TODO Auto-generated method stub
 		JSONObject jo = new JSONObject();
 		LinkedList<JSONObject> finalList = new LinkedList<JSONObject>();
-		while(!(list.isEmpty())) {
-			person.toJSON(list.remove());
+		for(int i = 0; i<list.size(); i++) {
+			person = new Person();
+			person.toJSON(list.get(i));
 			finalList.add(person.convertJSON());
 		}
 		jo.put("Persons", finalList);
-		PrintWriter pw = new PrintWriter("Input//AddressBook.json");
+		PrintWriter pw = new PrintWriter("Input//" +filename+ ".json");
 		pw.write(jo.toJSONString());
 		pw.flush();
 		pw.close();
 	}
 
-	public void delete() throws Exception {
-		list = readFile();
+	public void delete(String filename) throws Exception {
+		list = readFile(filename);
 		System.out.println("Give the name of the person you want to delete");
 		String name = utility.takeInputString();
 		for(int i =0; i<list.size(); i++) {
+			person = new Person();
 			person = list.get(i);
-			if(person.getFirstName().equals(name))
+			if(person.getFirstName().compareTo(name) == 0) {
 				list.remove(person);
-			break;
+				break;
+			}
 		}
-		
-		updateBook(list);
 	}
 	
-	public void edit() throws Exception {
-		list = readFile();
+	public void edit(String filename) throws Exception {
+		list = readFile(filename);
 		System.out.println("Give the name of the person whose details you want to edit");
 		String name = utility.takeInputString();
 		for(int i=0; i<list.size(); i++) {
@@ -118,34 +119,29 @@ public class AddressBook {
 				break;
 			}
 		}
-		
-		updateBook(list);
 	}
 	
-	public void sortByLastName() throws Exception {
-		list = readFile();
+	public void sortByLastName(String filename) throws Exception {
+		list = readFile(filename);
 		int n = list.size();
 		String[] lastNames = new String[n];
 		for(int i=0; i<n; i++) 
 			lastNames[i] = list.get(i).getLastName();
 		list = utility.sort(lastNames, list);
-		updateBook(list);
 	}
 	
-	public void sortByZip() throws Exception {
-		list = readFile();
+	public void sortByZip(String filename) throws Exception {
+		list = readFile(filename);
 		int n = list.size();
 		String[] lastNames = new String[n];
 		for(int i=0; i<n; i++) 
 			lastNames[i] = list.get(i).getZip();
 		list = utility.sort(lastNames, list);
-		updateBook(list);
 	}
 	
-	public void printAll() throws Exception {
-		list = readFile();
-		//System.out.println("blah");
-		while(list.isEmpty())
-			System.out.println(list.remove());
+	public void printAll(String filename) throws Exception {
+		list = readFile(filename);
+		for(int i =0; i<list.size(); i++)
+			System.out.println(list.get(i));
 	}
 }
