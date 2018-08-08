@@ -5,5 +5,5 @@ public interface AddressBookFunctions {
 	public void createAddressBook();
 	public void openAddressBook();
 	public void save();
-	
+	public void addressBookJDBC();
 }

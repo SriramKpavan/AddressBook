@@ -29,6 +29,15 @@ public class Utility {
 		return n;
 	}
 	
+	public long takeInputLong() {
+		long n = scanner.nextLong();
+		return n;
+	}
+	
+	public void emptyInput() {
+		scanner.nextLine();
+	}
+	
 	public LinkedList<Person> sort(String[] array, LinkedList<Person> list) {
 		// TODO Auto-generated method stub
 		int n = array.length;
